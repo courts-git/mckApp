@@ -1,0 +1,126 @@
+.chroma-grid {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  height: 100%;
+  background: rgba(46, 58, 89, 0.05);
+  border-radius: 12px;
+  padding: 8px;
+  overflow: hidden;
+}
+
+.chroma-cell {
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(135deg, 
+    rgba(196, 42, 45, 0.1), 
+    rgba(236, 224, 208, 0.1)
+  );
+  border-radius: 4px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.chroma-cell::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(196, 42, 45, 0.3), 
+    transparent
+  );
+  transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chroma-cell--active {
+  background: linear-gradient(135deg, 
+    rgba(196, 42, 45, 0.3), 
+    rgba(157, 34, 36, 0.3),
+    rgba(236, 224, 208, 0.3)
+  );
+  box-shadow: 
+    0 0 10px rgba(196, 42, 45, 0.4),
+    inset 0 0 10px rgba(236, 224, 208, 0.2);
+  animation: chromaPulse 2s ease-in-out infinite;
+}
+
+.chroma-cell--active::before {
+  left: 100%;
+}
+
+@keyframes chromaPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+/* Hover effects */
+.chroma-grid:hover .chroma-cell {
+  background: linear-gradient(135deg, 
+    rgba(196, 42, 45, 0.15), 
+    rgba(236, 224, 208, 0.15)
+  );
+}
+
+.chroma-grid:hover .chroma-cell:nth-child(odd) {
+  animation: chromaShimmer 3s ease-in-out infinite;
+}
+
+.chroma-grid:hover .chroma-cell:nth-child(even) {
+  animation: chromaShimmer 3s ease-in-out infinite reverse;
+}
+
+@keyframes chromaShimmer {
+  0%, 100% {
+    background: linear-gradient(135deg, 
+      rgba(196, 42, 45, 0.1), 
+      rgba(236, 224, 208, 0.1)
+    );
+  }
+  25% {
+    background: linear-gradient(135deg, 
+      rgba(196, 42, 45, 0.2), 
+      rgba(157, 34, 36, 0.15)
+    );
+  }
+  50% {
+    background: linear-gradient(135deg, 
+      rgba(157, 34, 36, 0.2), 
+      rgba(236, 224, 208, 0.2)
+    );
+  }
+  75% {
+    background: linear-gradient(135deg, 
+      rgba(236, 224, 208, 0.2), 
+      rgba(196, 42, 45, 0.15)
+    );
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .chroma-cell {
+    height: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chroma-cell {
+    height: 12px;
+  }
+  
+  .chroma-grid {
+    gap: 1px;
+    padding: 6px;
+  }
+}
