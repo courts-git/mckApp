@@ -17,7 +17,7 @@ const Home: React.FC = () => {
 
   // Gallery items for CircularGallery
   const galleryItems = [
-    { image: '/heroBackground.jpg', text: '' },
+    { image: '/imgCarousel_1.jpg', text: '' },
     { image: '/heroBackground.jpg', text: '' },
     { image: '/heroBackground.jpg', text: '' },
     { image: '/heroBackground.jpg', text: '' },
@@ -45,6 +45,7 @@ const Home: React.FC = () => {
        <section className="hero">
          <div className="hero-parallax-bg"></div>
          <div className="hero-overlay"></div>
+         <div className="hero-animated-overlay"></div>
          <div className="hero-content">
            <h1 className="hero-title sahara-scrolls">Moroccan Court Kings</h1>
            <p className="hero-subtitle montserrat">
@@ -247,6 +248,7 @@ const Home: React.FC = () => {
           <h2 className="section-title">Our Partners & Sponsors</h2>
           <div className="sponsors-carousel">
             <div className="sponsors-track">
+              {/* Duplicate sponsors twice for seamless infinite scroll */}
               {[...sponsors, ...sponsors].map((sponsor, index) => (
                 <div key={`${sponsor.id}-${index}`} className="sponsor-item">
                   <img

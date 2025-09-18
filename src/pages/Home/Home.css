@@ -59,6 +59,114 @@
   z-index: 0;
 }
 
+/* Animated Background Elements */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(196, 42, 45, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(236, 224, 208, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(196, 42, 45, 0.15) 0%, transparent 70%);
+  z-index: 1;
+  animation: backgroundMove 20s ease-in-out infinite;
+}
+
+@keyframes backgroundMove {
+  0%, 100% {
+    transform: translateX(0) translateY(0) rotate(0deg);
+  }
+  33% {
+    transform: translateX(-20px) translateY(-30px) rotate(1deg);
+  }
+  66% {
+    transform: translateX(20px) translateY(20px) rotate(-1deg);
+  }
+}
+
+/* Floating Basketball Elements */
+.hero::after {
+  content: '🏀';
+  position: absolute;
+  top: 15%;
+  right: 10%;
+  font-size: 2rem;
+  opacity: 0.1;
+  z-index: 1;
+  animation: floatingBall 15s ease-in-out infinite;
+}
+
+@keyframes floatingBall {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-30px) rotate(180deg);
+  }
+}
+
+/* Additional floating elements */
+.hero-content::before {
+  content: '👑';
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  font-size: 1.5rem;
+  opacity: 0.15;
+  animation: floatingCrown 12s ease-in-out infinite reverse;
+}
+
+@keyframes floatingCrown {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) translateX(10px) rotate(15deg);
+  }
+}
+
+/* Animated Gradient Overlay */
+.hero-animated-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    rgba(196, 42, 45, 0.1) 0%,
+    transparent 25%,
+    transparent 75%,
+    rgba(236, 224, 208, 0.1) 100%
+  );
+  z-index: 1;
+  animation: gradientShift 8s ease-in-out infinite alternate;
+}
+
+@keyframes gradientShift {
+  0% {
+    background: linear-gradient(
+      45deg,
+      rgba(196, 42, 45, 0.1) 0%,
+      transparent 25%,
+      transparent 75%,
+      rgba(236, 224, 208, 0.1) 100%
+    );
+  }
+  100% {
+    background: linear-gradient(
+      225deg,
+      rgba(236, 224, 208, 0.15) 0%,
+      transparent 25%,
+      transparent 75%,
+      rgba(196, 42, 45, 0.05) 100%
+    );
+  }
+}
+
 .hero-overlay {
   position: absolute;
   top: 0;
@@ -528,13 +636,22 @@
 
 .sponsors-track {
   display: flex;
-  animation: scroll-left 20s linear infinite;
-  gap: 3rem;
+  animation: infiniteScroll 30s linear infinite;
+  gap: 4rem;
+  width: calc(200px * 12 + 4rem * 11); /* Width for all sponsors + gaps */
 }
 
-@keyframes scroll-left {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+.sponsors-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes infiniteScroll {
+  0% { 
+    transform: translateX(0); 
+  }
+  100% { 
+    transform: translateX(calc(-200px * 6 - 4rem * 5)); /* Move exactly half the width */
+  }
 }
 
 .sponsor-item {
@@ -543,9 +660,12 @@
   align-items: center;
   justify-content: center;
   width: 200px;
+  height: 120px;
   border-radius: var(--border-radius);
   padding: 1rem;
-  transition: var(--transition);
+  transition: all 0.3s ease;
+  background: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .sponsor-item:hover {
@@ -554,14 +674,22 @@
 
 .sponsor-logo {
   max-width: 100%;
+  max-height: 80px;
   border-radius: 50%;
   object-fit: contain;
-  opacity: 0.7;
-  transition: var(--transition);
+  opacity: 0.8;
+  transition: all 0.3s ease;
+  filter: grayscale(0.3);
+}
+
+.sponsor-item:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .sponsor-item:hover .sponsor-logo {
   opacity: 1;
+  filter: grayscale(0);
 }
 
 .sponsors-note {
@@ -781,16 +909,39 @@
 
   .sponsors-track {
     gap: 2rem;
+    animation: infiniteScrollMobile 25s linear infinite;
   }
 
   .sponsor-item {
     width: 150px;
+    height: 100px;
+  }
+
+  @keyframes infiniteScrollMobile {
+    0% { 
+      transform: translateX(0); 
+    }
+    100% { 
+      transform: translateX(calc(-150px * 6 - 2rem * 5)); /* Adjusted for mobile width */
+    }
   }
 
   /* Mobile parallax fix */
   .hero-parallax-bg {
     background-attachment: scroll;
     animation: none; /* Disable animations on mobile for better performance */
+  }
+
+  /* Disable heavy animations on mobile for better performance */
+  .hero::before,
+  .hero::after,
+  .hero-content::before {
+    display: none;
+  }
+
+  .hero-animated-overlay {
+    animation: none;
+    background: linear-gradient(135deg, rgba(196, 42, 45, 0.1) 0%, rgba(236, 224, 208, 0.1) 100%);
   }
 
   .hero-content {
