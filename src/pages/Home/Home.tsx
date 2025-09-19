@@ -41,11 +41,13 @@ const Home: React.FC = () => {
 
   return (
     <div className="home">
-       {/* Hero Section with Parallax */}
+       {/* Hero Section with Animated Background */}
        <section className="hero">
          <div className="hero-parallax-bg"></div>
+         <div className="hero-blinds"></div>
+         <div className="hero-prism"></div>
+         <div className="hero-dark-veil"></div>
          <div className="hero-overlay"></div>
-         <div className="hero-animated-overlay"></div>
          <div className="hero-content">
            <h1 className="hero-title sahara-scrolls">Moroccan Court Kings</h1>
            <p className="hero-subtitle montserrat">
