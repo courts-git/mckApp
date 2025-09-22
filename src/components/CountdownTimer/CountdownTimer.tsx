@@ -72,17 +72,6 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
     <div className={`countdown-overlay ${isComplete ? 'countdown-complete' : ''}`}>
       {/* Main Content */}
       <div className="countdown-content">
-        {/* Moroccan Decorative Element */}
-        <div className="moroccan-ornament">
-          <svg viewBox="0 0 100 100" className="ornament-svg">
-            <path
-              d="M50 10 L60 25 L75 25 L65 40 L70 55 L50 45 L30 55 L35 40 L25 25 L40 25 Z"
-              fill="currentColor"
-              opacity="0.3"
-            />
-            <circle cx="50" cy="50" r="8" fill="currentColor" opacity="0.6"/>
-          </svg>
-        </div>
 
         {/* Title Section */}
         <div className="countdown-header">

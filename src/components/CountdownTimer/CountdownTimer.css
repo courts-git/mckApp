@@ -11,6 +11,7 @@
   justify-content: center;
   background: transparent;
   overflow: hidden;
+  background-color: #1a1a1a;
 }
 
 /* Background patterns and overlays removed */
@@ -47,8 +48,8 @@
   font-size: 3.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  color: #1a1a1a;
-  text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.5);
+  color: #9D2224;
+  text-shadow: 2px 2px 8px rgba(115, 3, 3, 0.5);
   font-family: 'Sahara Scrolls', 'Cinzel', serif;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -56,9 +57,8 @@
 
 .countdown-subtitle {
   font-size: 1.3rem;
-  color: rgba(26, 26, 26, 0.8);
+  color: #efefef;
   font-weight: 400;
-  text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.3);
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.5;
@@ -83,7 +83,7 @@
 
 .time-card {
   background: linear-gradient(145deg, 
-    rgba(255, 255, 255, 0.1) 0%,
+    rgba(169, 38, 38, 0.1) 0%,
     rgba(255, 255, 255, 0.05) 100%);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 16px;
@@ -127,7 +127,7 @@
 
 .time-label {
   font-size: 0.9rem;
-  color: rgba(26, 26, 26, 0.7);
+  color: #efefef;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: 500;
@@ -135,7 +135,7 @@
 
 .time-separator {
   font-size: 2rem;
-  color: rgba(26, 26, 26, 0.4);
+  color: #9D2224;
   font-weight: 300;
   animation: blink 2s ease-in-out infinite;
 }
@@ -182,7 +182,7 @@
 
 .brand-text {
   font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: #efefef;
   font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
