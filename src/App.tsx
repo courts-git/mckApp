@@ -6,6 +6,7 @@ import { useAuth } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+import CountdownTimer from './components/CountdownTimer';
 import Login from './pages/Login/Login';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Home from './pages/Home/Home';
@@ -25,6 +26,27 @@ import Users from './pages/Users/Users';
 const AppRoutes: React.FC = () => {
   const { currentUser } = useAuth();
 
+  // SET YOUR TARGET DATE HERE - Change this to your desired launch date
+  const targetDate = new Date('2025-09-25T10:00:00'); // Example: New Year's Eve 2024
+
+  // Check if we've reached the target date
+  const isLaunched = new Date() >= targetDate;
+
+  // CONDITIONAL RENDERING: Show ONLY timer before launch, ONLY app after launch
+  if (!isLaunched) {
+    // BEFORE LAUNCH: Only show countdown timer (main app completely hidden from DOM)
+    return (
+      <div className="App">
+        <CountdownTimer 
+          targetDate={targetDate}
+          title="The Court Awaits"
+          subtitle="Moroccan Court Kings Championship is launching soon. Prepare for an epic basketball journey."
+        />
+      </div>
+    );
+  }
+
+  // AFTER LAUNCH: Only show main app (countdown timer completely hidden from DOM)
   return (
     <div className="App">
       {currentUser && <Header />}
