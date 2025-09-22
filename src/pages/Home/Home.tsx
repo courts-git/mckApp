@@ -1,7 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
-import CircularGallery from '../../components/InfiniteScrollGallery'
+import CircularGallery from '../../components/InfiniteScrollGallery';
+import Hero from '../../components/Hero';
+
 
 
 const Home: React.FC = () => {
@@ -18,15 +20,15 @@ const Home: React.FC = () => {
   // Gallery items for CircularGallery
   const galleryItems = [
     { image: '/imgCarousel_1.jpg', text: '' },
-    { image: '/heroBackground.jpg', text: '' },
-    { image: '/heroBackground.jpg', text: '' },
-    { image: '/heroBackground.jpg', text: '' },
-    { image: '/heroBackground.jpg', text: '' },
-    { image: '/heroBackground.jpg', text: '' },
-    { image: '/heroBackground.jpg', text: '' },
-    { image: '/heroBackground.jpg', text: '' },
-    { image: '/heroBackground.jpg', text: '' },
-    { image: '/heroBackground.jpg', text: '' },
+    { image: '/imgCarousel_6.png', text: '' },
+    { image: '/imgCarousel_3.png', text: '' },
+    { image: '/imgCarousel_4.png', text: '' },
+    { image: '/imgCarousel_5.png', text: '' },
+    { image: '/imgCarousel_2.jpg', text: '' },
+    { image: '/imgCarousel_7.png', text: '' },
+    { image: '/imgCarousel_8.png', text: '' },
+    { image: '/imgCarousel_9.png', text: '' },
+    { image: '/imgCarousel_5.png', text: '' },
   ];
 
   // Placeholder sponsors - you can replace these with actual sponsor logos later
@@ -41,31 +43,10 @@ const Home: React.FC = () => {
 
   return (
     <div className="home">
-       {/* Hero Section with Animated Background */}
-       <section className="hero">
-         <div className="hero-parallax-bg"></div>
-         <div className="hero-blinds"></div>
-         <div className="hero-prism"></div>
-         <div className="hero-dark-veil"></div>
-         <div className="hero-overlay"></div>
-         <div className="hero-content">
-           <h1 className="hero-title sahara-scrolls">Moroccan Court Kings</h1>
-           <p className="hero-subtitle montserrat">
-             From the Medina to Midcourt
-           </p>
-           <div className="hero-actions">
-             <button className="btn btn-primary montserrat" onClick={() => navigate('/create-account')}>
-               Create Player Account
-             </button>
-             <button className="btn btn-secondary montserrat" onClick={handleLogin}>
-               Login
-             </button>
-             <button className="btn btn-tertiary montserrat" onClick={handleContact}>
-               Contact Us
-             </button>
-           </div>
-        </div>
-      </section>
+      {/* Hero Section */}
+      <div style={{ width: '100%', height: '100vh', position: 'relative' }}>
+        <Hero />
+      </div>
 
       {/* Circular Gallery Section */}      
       <div style={{ height: '40vw', position: 'relative' }}>
@@ -75,6 +56,8 @@ const Home: React.FC = () => {
           textColor="#C42A2D" 
           borderRadius={.05} 
           scrollEase={0.02}
+          autoScrollEnabled={true}
+          autoScrollSpeed={0.08}
         />
       </div>
 
@@ -96,6 +79,30 @@ const Home: React.FC = () => {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Sponsors Section with Infinite Carousel */}
+      <section className="sponsors-section">
+        <div className="container">
+          <h2 className="section-title">Our Partners & Sponsors</h2>
+          <div className="sponsors-carousel">
+            <div className="sponsors-track">
+              {/* Duplicate sponsors twice for seamless infinite scroll */}
+              {[...sponsors, ...sponsors].map((sponsor, index) => (
+                <div key={`${sponsor.id}-${index}`} className="sponsor-item">
+                  <img
+                    src={sponsor.logo}
+                    alt={sponsor.name}
+                    className="sponsor-logo"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+            <p className="sponsors-note">
+              Interested in partnering with MCK? <button className="link-button" onClick={handleContact}>Contact us</button> to learn more.
+            </p>
         </div>
       </section>
 
@@ -241,30 +248,6 @@ const Home: React.FC = () => {
               <p>Modern tournament management and player engagement tools</p>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Sponsors Section with Infinite Carousel */}
-      <section className="sponsors-section">
-        <div className="container">
-          <h2 className="section-title">Our Partners & Sponsors</h2>
-          <div className="sponsors-carousel">
-            <div className="sponsors-track">
-              {/* Duplicate sponsors twice for seamless infinite scroll */}
-              {[...sponsors, ...sponsors].map((sponsor, index) => (
-                <div key={`${sponsor.id}-${index}`} className="sponsor-item">
-                  <img
-                    src={sponsor.logo}
-                    alt={sponsor.name}
-                    className="sponsor-logo"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-            <p className="sponsors-note">
-              Interested in partnering with MCK? <button className="link-button" onClick={handleContact}>Contact us</button> to learn more.
-            </p>
         </div>
       </section>
 

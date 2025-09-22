@@ -382,6 +382,8 @@ interface AppConfig {
   font?: string;
   scrollSpeed?: number;
   scrollEase?: number;
+  autoScrollSpeed?: number;
+  autoScrollEnabled?: boolean;
 }
 
 class App {
@@ -407,13 +409,21 @@ class App {
   raf: number = 0;
 
   boundOnResize!: () => void;
-  boundOnWheel!: (e: Event) => void;
   boundOnTouchDown!: (e: MouseEvent | TouchEvent) => void;
   boundOnTouchMove!: (e: MouseEvent | TouchEvent) => void;
   boundOnTouchUp!: () => void;
+  boundOnMouseEnter!: () => void;
+  boundOnMouseLeave!: () => void;
 
   isDown: boolean = false;
   start: number = 0;
+  
+  // Auto-scroll properties
+  autoScrollSpeed: number = 0.3;
+  isAutoScrollEnabled: boolean = true;
+  isHovered: boolean = false;
+  userInteracting: boolean = false;
+  lastUserInteraction: number = 0;
 
   constructor(
     container: HTMLElement,
@@ -424,12 +434,16 @@ class App {
       borderRadius = 0,
       font = 'bold 30px Figtree',
       scrollSpeed = 2,
-      scrollEase = 0.05
+      scrollEase = 0.05,
+      autoScrollSpeed = 0.3,
+      autoScrollEnabled = true
     }: AppConfig
   ) {
     document.documentElement.classList.remove('no-js');
     this.container = container;
     this.scrollSpeed = scrollSpeed;
+    this.autoScrollSpeed = autoScrollSpeed;
+    this.isAutoScrollEnabled = autoScrollEnabled;
     this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
     this.onCheckDebounce = debounce(this.onCheck.bind(this), 200);
     this.createRenderer();
@@ -551,12 +565,16 @@ class App {
 
   onTouchDown(e: MouseEvent | TouchEvent) {
     this.isDown = true;
+    this.userInteracting = true;
+    this.lastUserInteraction = Date.now();
     this.scroll.position = this.scroll.current;
     this.start = 'touches' in e ? e.touches[0].clientX : e.clientX;
   }
 
   onTouchMove(e: MouseEvent | TouchEvent) {
     if (!this.isDown) return;
+    this.userInteracting = true;
+    this.lastUserInteraction = Date.now();
     const x = 'touches' in e ? e.touches[0].clientX : e.clientX;
     const distance = (this.start - x) * (this.scrollSpeed * 0.025);
     this.scroll.target = (this.scroll.position ?? 0) + distance;
@@ -565,13 +583,22 @@ class App {
   onTouchUp() {
     this.isDown = false;
     this.onCheck();
+    // Resume auto-scroll after 2 seconds of no interaction
+    setTimeout(() => {
+      if (Date.now() - this.lastUserInteraction >= 2000) {
+        this.userInteracting = false;
+      }
+    }, 2000);
   }
 
-  onWheel(e: Event) {
-    const wheelEvent = e as WheelEvent;
-    const delta = wheelEvent.deltaY || (wheelEvent as any).wheelDelta || (wheelEvent as any).detail;
-    this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2;
-    this.onCheckDebounce();
+  // Removed wheel event handling - gallery now moves independently of scroll
+
+  onMouseEnter() {
+    this.isHovered = true;
+  }
+
+  onMouseLeave() {
+    this.isHovered = false;
   }
 
   onCheck() {
@@ -601,8 +628,15 @@ class App {
   }
 
   update() {
+    // Continuous right-to-left movement (independent of scroll)
+    // Only pause when user is actively interacting (clicking/dragging), not on hover
+    if (this.isAutoScrollEnabled && !this.userInteracting) {
+      this.scroll.target += this.autoScrollSpeed;
+    }
+
     this.scroll.current = lerp(this.scroll.current, this.scroll.target, this.scroll.ease);
-    const direction = this.scroll.current > this.scroll.last ? 'right' : 'left';
+    // Always moving right to left for infinite scroll
+    const direction = 'right';
     if (this.medias) {
       this.medias.forEach(media => media.update(this.scroll, direction));
     }
@@ -613,32 +647,43 @@ class App {
 
   addEventListeners() {
     this.boundOnResize = this.onResize.bind(this);
-    this.boundOnWheel = this.onWheel.bind(this);
     this.boundOnTouchDown = this.onTouchDown.bind(this);
     this.boundOnTouchMove = this.onTouchMove.bind(this);
     this.boundOnTouchUp = this.onTouchUp.bind(this);
+    this.boundOnMouseEnter = this.onMouseEnter.bind(this);
+    this.boundOnMouseLeave = this.onMouseLeave.bind(this);
+    
     window.addEventListener('resize', this.boundOnResize);
-    window.addEventListener('mousewheel', this.boundOnWheel);
-    window.addEventListener('wheel', this.boundOnWheel);
+    // Removed wheel event listeners - gallery moves independently of scroll
     window.addEventListener('mousedown', this.boundOnTouchDown);
     window.addEventListener('mousemove', this.boundOnTouchMove);
     window.addEventListener('mouseup', this.boundOnTouchUp);
     window.addEventListener('touchstart', this.boundOnTouchDown);
     window.addEventListener('touchmove', this.boundOnTouchMove);
     window.addEventListener('touchend', this.boundOnTouchUp);
+    
+    // Add hover detection to the container
+    this.container.addEventListener('mouseenter', this.boundOnMouseEnter);
+    this.container.addEventListener('mouseleave', this.boundOnMouseLeave);
   }
 
   destroy() {
     window.cancelAnimationFrame(this.raf);
     window.removeEventListener('resize', this.boundOnResize);
-    window.removeEventListener('mousewheel', this.boundOnWheel);
-    window.removeEventListener('wheel', this.boundOnWheel);
+    // Removed wheel event listeners - gallery moves independently of scroll
     window.removeEventListener('mousedown', this.boundOnTouchDown);
     window.removeEventListener('mousemove', this.boundOnTouchMove);
     window.removeEventListener('mouseup', this.boundOnTouchUp);
     window.removeEventListener('touchstart', this.boundOnTouchDown);
     window.removeEventListener('touchmove', this.boundOnTouchMove);
     window.removeEventListener('touchend', this.boundOnTouchUp);
+    
+    // Remove hover event listeners
+    if (this.container) {
+      this.container.removeEventListener('mouseenter', this.boundOnMouseEnter);
+      this.container.removeEventListener('mouseleave', this.boundOnMouseLeave);
+    }
+    
     if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
       this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas as HTMLCanvasElement);
     }
@@ -653,6 +698,8 @@ interface CircularGalleryProps {
   font?: string;
   scrollSpeed?: number;
   scrollEase?: number;
+  autoScrollSpeed?: number;
+  autoScrollEnabled?: boolean;
 }
 
 export default function CircularGallery({
@@ -662,7 +709,9 @@ export default function CircularGallery({
   borderRadius = 0.5,
   font = 'bold 30px Figtree',
   scrollSpeed = 2,
-  scrollEase = 0.05
+  scrollEase = 0.05,
+  autoScrollSpeed = 0.3,
+  autoScrollEnabled = true
 }: CircularGalleryProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -674,11 +723,13 @@ export default function CircularGallery({
       borderRadius,
       font,
       scrollSpeed,
-      scrollEase
+      scrollEase,
+      autoScrollSpeed,
+      autoScrollEnabled
     });
     return () => {
       app.destroy();
     };
-  }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase]);
+  }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase, autoScrollSpeed, autoScrollEnabled]);
   return <div className="circular-gallery" ref={containerRef} />;
 }
