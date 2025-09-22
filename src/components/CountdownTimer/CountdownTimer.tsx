@@ -70,18 +70,6 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
 
   return (
     <div className={`countdown-overlay ${isComplete ? 'countdown-complete' : ''}`}>
-      {/* Zelij Pattern Background */}
-      <div className="zelij-background">
-        <div className="zelij-pattern zelij-pattern-1"></div>
-        <div className="zelij-pattern zelij-pattern-2"></div>
-        <div className="zelij-pattern zelij-pattern-3"></div>
-        <div className="zelij-pattern zelij-pattern-4"></div>
-      </div>
-
-      {/* Gradient Overlays for depth */}
-      <div className="gradient-overlay"></div>
-      <div className="radial-overlay"></div>
-
       {/* Main Content */}
       <div className="countdown-content">
         {/* Moroccan Decorative Element */}
