@@ -9,6 +9,9 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // TEMPORARILY HIDDEN - No active tournaments
+  const isRegistrationActive = false;
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -86,17 +89,19 @@ const Login: React.FC = () => {
           </button>
         </form>
 
-        <div className="login-footer">
-          <div className="divider">
-            <span>New Player?</span>
+        {isRegistrationActive && (
+          <div className="login-footer">
+            <div className="divider">
+              <span>New Player?</span>
+            </div>
+            <Link to="/create-account" className="create-account-button">
+              Create Player Account
+            </Link>
+            <p className="login-note">
+              Join the MCK community and participate in tournaments
+            </p>
           </div>
-          <Link to="/create-account" className="create-account-button">
-            Create Player Account
-          </Link>
-          <p className="login-note">
-            Join the MCK community and participate in tournaments
-          </p>
-        </div>
+        )}
       <div className="back-to-home">
           <Link to="/" className="back-link montserrat">
             <span className="back-arrow">←</span>

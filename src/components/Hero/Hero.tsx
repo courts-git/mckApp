@@ -137,6 +137,9 @@ const Hero: React.FC<HeroProps> = () => {
     offset: ["start start", "end start"]
   });
 
+  // TEMPORARILY HIDDEN - No active tournaments
+  const isRegistrationActive = false;
+
   // Transform values for different elements
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
@@ -247,14 +250,16 @@ const Hero: React.FC<HeroProps> = () => {
             >
               Contact Us
             </motion.button>
-            <motion.button 
-              className="hero-btn hero-btn-outline" 
-              onClick={handleCreatePlayer}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Create a Player
-            </motion.button>
+            {isRegistrationActive && (
+              <motion.button 
+                className="hero-btn hero-btn-outline" 
+                onClick={handleCreatePlayer}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Create a Player
+              </motion.button>
+            )}
           </motion.div>
         </motion.div>
         

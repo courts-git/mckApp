@@ -44,7 +44,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.9) !important;
   text-decoration: none;
   font-weight: 500;
   font-size: 1rem;

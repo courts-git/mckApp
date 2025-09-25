@@ -9,6 +9,9 @@ import Hero from '../../components/Hero';
 const Home: React.FC = () => {
   const navigate = useNavigate();
 
+  // TEMPORARILY HIDDEN - No active tournaments
+  const isRegistrationActive = false;
+
   const handleLogin = () => {
     navigate('/login');
   };
@@ -258,9 +261,11 @@ const Home: React.FC = () => {
             <h2>Ready to Compete?</h2>
             <p>Join the Moroccan Court Kings community and take your basketball skills to the next level</p>
             <div className="cta-actions">
-              <button className="btn btn-primary btn-large" onClick={handleLogin}>
-                Join Tournament
-              </button>
+              {isRegistrationActive && (
+                <button className="btn btn-primary btn-large" onClick={handleLogin}>
+                  Join Tournament
+                </button>
+              )}
               <button className="btn btn-secondary btn-large" onClick={handleContact}>
                 Contact Us
               </button>

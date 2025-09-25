@@ -109,8 +109,39 @@ const CreateAccount: React.FC = () => {
     );
   }
 
+  // TEMPORARILY HIDDEN - No active tournaments
+  const isRegistrationActive = false;
+
+  if (!isRegistrationActive) {
+    return (
+      <div className="create-account">
+        <div className="create-account-hero">
+          <div className="container">
+            <div className="back-to-home">
+              <Link to="/" className="back-link montserrat white-text">
+                <span className="back-arrow">←</span>
+                Back to Home
+              </Link>
+            </div>
+            <div style={{ textAlign: 'center', padding: '4rem 0', minHeight: '60vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <h1 className="create-account-title sahara-scrolls" style={{ marginBottom: '2rem' }}>
+                Tournament Registration Closed
+              </h1>
+              <p className="create-account-subtitle montserrat" style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>
+                There are no current tournaments available for registration.
+              </p>
+              <p className="montserrat" style={{ color: '#efefef', fontSize: '1rem' }}>
+                Please check back later or contact us for more information about upcoming tournaments.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="create-account">
+    <div className="create-account" style={{ display: 'none' }}>
       <div className="create-account-hero">
         <div className="container">
           <div className="back-to-home">
